@@ -9,12 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: ZIP entpacken
+        with:
+          fetch-depth: 0
+      - name: Neueste ZIP entpacken
         run: |
-          ZIP=$(ls *.zip | head -n 1)
-          echo "Entpacke: $ZIP"
+          ZIP=$(for f in *.zip; do echo "$(git log -1 --format=%ct -- "$f") $f"; done | sort -n | tail -n 1 | cut -d' ' -f2-)
+          echo "Benutze die zuletzt hochgeladene ZIP: $ZIP"
           unzip -q -o "$ZIP" -d build_src
-          ls build_src
+          grep versionName build_src/MadeAt545/app/build.gradle.kts
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
