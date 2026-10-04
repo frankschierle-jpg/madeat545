@@ -15,11 +15,10 @@ jobs:
           echo "Entpacke: $ZIP"
           unzip -q -o "$ZIP" -d build_src
           ls build_src
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 17
-      - uses: android-actions/setup-android@v3
       - name: APK bauen
         working-directory: build_src/MadeAt545
         run: |
